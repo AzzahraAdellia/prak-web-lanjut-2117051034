@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,8 @@
     <title>Document</title>
 </head>
 <body>
+<!-- <img src="foto_formal_sintaaa.jpeg" style="width:500px;height:400px; border-radius: 50%;"  -->
+
     <center>
     </center>
 
@@ -15,6 +18,7 @@
       <img src ="
     <?php
         echo base_url('./img/ijah.jpg') ;
+        echo base_url('./img/ijah.jpeg') ;
     ?>">
       <div class="item" >
             <?= $nama?>
@@ -24,6 +28,10 @@
 </div>
 <div class="item">
             <?= $npm?>
+            <?= $npm?>
+</div>
+<div class="item">
+            <?= $kelas?>
 </div>
 
 </div>

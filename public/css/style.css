@@ -3,8 +3,8 @@
 @import url('https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans');
 
 body{
-
     background-color: #08ffff;
+    background-color: #47edff;
 
 }
 .container{
@@ -17,6 +17,7 @@ body{
 }
 .item{
     background-color: rgb(79, 107, 200);
+    background-color: rgb(81, 107, 201);
     margin: 2vh;
     padding: 10px;
     width :20vw;
