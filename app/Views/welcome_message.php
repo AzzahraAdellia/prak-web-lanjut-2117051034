@@ -220,7 +220,7 @@
 
     <div class="heroe">
 
-        <h1>sinta nurhalifah-2117051015 <?= CodeIgniter\CodeIgniter::CI_VERSION ?></h1>
+        <h1>Azzahra Adellia 2117051034 <?= CodeIgniter\CodeIgniter::CI_VERSION ?></h1>
 
         <h2>The small framework with powerful features</h2>
 
