@@ -7,7 +7,7 @@
     <center>
     <?php $validation = \Config\Services::validation();?>
 
-    <form action="<?= base_url('/user/store')?>" method="POST">
+    <form action="<?= base_url('/user/store')?>" method="POST" enctype="multipart/form-data">
         <label for="">Nama : </label>
         
         <input class="form-control <?= (empty(validation_show_error('nama'))) ? '' : 'is-invalid' ?>" type="text" placeholder="Default input" aria-label="default input example" type="text" name="nama" id="" style="width: 20%" value="<?= old('nama') ?>">
@@ -34,6 +34,8 @@
             ?>
         </select>
         <br>
+
+        <input type="file", name="foto">
         
         <button type="submit" class="btn btn-secondary" >Submit</button>
     </form>

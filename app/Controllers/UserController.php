@@ -8,10 +8,21 @@ use App\Models\KelasModel;
 
 class UserController extends BaseController
 {
-    protected $helpers=['Form'];
-    public function index()
+    public $userModel;
+    public $kelasModel;
+
+    public function __construct()
     {
-        
+        $this->userModel = new UserModel();
+        $this->kelasModel = new KelasModel();
+    }
+    protected $helpers=['Form'];
+    public function index(){
+        $data = [
+            'title' => "List User",
+            'users' => $this->userModel->getUser(),
+        ];
+    return view('list_user', $data);
     }
     public function profile($nama = "", $kelas = "", $npm = ""){
         $data = [
@@ -52,7 +63,7 @@ class UserController extends BaseController
     }
 
     public function store(){
-        //validasi input
+        $userModel = new UserModel();
         if(!$this->validate([
             'nama' => [
                 'rules' => 'required',
@@ -71,13 +82,21 @@ class UserController extends BaseController
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->back()->withInput();
         }
+        
+        
+        $path = 'assets/upload/img/';
+        $foto = $this->request->getFile('foto');
+        $name = $foto->getRandomName();
+ 
+        if ($foto->move($path, $name)){
+            $foto = base_url ($path . $name);
+        }
 
-       $userModel = new UserModel();
-
-       $userModel->saveUser([
+       $this->userModel->saveUser([
         'nama' => $this->request->getVar('nama'),
         'id_kelas' => $this->request->getVar('kelas'),
         'npm' => $this->request->getVar('npm'),
+        'foto' => $foto
        ]);
 
         $data = [
@@ -85,7 +104,8 @@ class UserController extends BaseController
             'kelas' => $this->request->getVar('kelas'),
             'npm' => $this->request->getVar('npm'),
         ];
-        return view('profile', $data);
+
+        return redirect()->to('/user');
     }
 
 	/**
@@ -103,4 +123,13 @@ class UserController extends BaseController
 		$this->helpers = $helpers;
 		return $this;
 	}
+
+    public function show($id){
+        $user = $this->userModel->getUser($id);
+        $data = [
+            'title' => 'Profile',
+            'user'  => $user,
+        ];
+        return view('profile', $data);
+    }
 }
