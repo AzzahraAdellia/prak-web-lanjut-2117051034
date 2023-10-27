@@ -52,10 +52,24 @@ class UserModel extends Model
         ->join('kelas', 'kelas.id=user.id_kelas',)->findAll();
     }
 
-    public function updateUser($data, $id){
+    public function updateUser($id, $data){
         return $this->update($id, $data);
     }
+    
+    
     public function deleteUser($id){
         return $this->delete($id);
     }
+    public function getUserKelas($kelasId = null) {
+        $builder = $this->select('user.*, kelas.nama_kelas')
+            ->join('kelas', 'kelas.id=user.id_kelas');
+        
+        if ($kelasId !== null) {
+            $builder->where('kelas.id', $kelasId);
+        }
+        
+        return $builder->findAll();
+    }
+    
+    
 }

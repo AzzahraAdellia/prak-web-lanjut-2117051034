@@ -144,37 +144,92 @@ class UserController extends BaseController
         ];
         return view('edit_user', $data);
     }
-    public function update ($id){
+    public function update($id)
+    {
+        // Retrieve the existing user data
+        $existingUser = $this->userModel->getUser($id);
+    
+        if (empty($existingUser)) {
+            // Handle the case where the user doesn't exist
+            return redirect()->back()->with('error', 'User not found.');
+        }
+    
         $path = 'assets/upload/img/';
         $foto = $this->request->getFile('foto');
-
-        if ($foto->isValid()){
+    
+        if ($foto) { // Check if a file was uploaded
             $name = $foto->getRandomName();
-
-            if ($foto->move($path, $name)){
-                $foto_path = base_url($path . $name);
+    
+            if ($foto->move($path, $name)) {
+                $foto = base_url($path . $name);
+    
+                // Update the user's data
+                $this->userModel->updateUser($id, [
+                    'nama' => $this->request->getVar('nama'),
+                    'id_kelas' => $this->request->getVar('kelas'),
+                    'npm' => $this->request->getVar('npm'),
+                    'foto' => $foto
+                ]);
+    
+                $data = [
+                    'nama' => $this->request->getVar('nama'),
+                    'kelas' => $this->request->getVar('kelas'),
+                    'npm' => $this->request->getVar('npm'),
+                ];
+    
+                return redirect()->to('/user')->with('success', 'User data updated successfully.');
+            } else {
+                // Log the error message to the console
+                echo '<script>console.error("File upload failed.")</script>';
+                return redirect()->back()->with('error', 'File upload failed.');
             }
+        } else {
+            // Handle the case where no file was uploaded.
+            return redirect()->back()->with('error', 'No file uploaded.');
         }
+    }
+    
+    
+
+public function destroy($id)
+{
+    $result = $this->userModel->deleteUser($id);
+    
+    if (!$result) {
+        return redirect()->back()->with('error', 'Failed to delete data');
+    }
+    
+    return redirect()->to(base_url('/user'))->with('success', 'Data successfully deleted');
+}
+public function delete($id)
+{
+    $user = $this->userModel->getUser($id); // Retrieve the user data
+    if (empty($user)) {
+        return redirect()->to(base_url('/user'))->with('error', 'User not found.');
+    }
+
+    $result = $this->userModel->deleteUser($id);
+
+    if ($result) {
+        return redirect()->to(base_url('/user'))->with('success', 'User data deleted successfully.');
+    } else {
+        return redirect()->to(base_url('/user'))->with('error', 'Failed to delete user.');
+    }
+}
+
+public function deleteUser($id)
+{
+    return $this->delete($id);
+}
+
+    public function getKelas($id_kelas){
+        $user = $this->userModel->getUserKelas($id_kelas);
         $data = [
-            'nama' => $this->request->getVar('nama'),
-            'kelas' => $this->request->getVar('kelas'),
-            'npm' => $this->request->getVar('npm'),
-            'foto' => $foto_path
+            'title' => 'Profile',
+            'user'  => $user,
         ];
-        $result = $this->userModel->updateUser($data, $id);
-        
-        if(!$result){
-            return redirect()->back()->withInput()
-                ->with('error', 'Gagal Menyimpan Data');
-        }
-        return redirect()->to('/user');
+        return view('list_kelas', $data);
     }
-    public function destroy($id){
-        $result = $this->userModel->deleteUser($id);
-        if(!$result){
-            return redirect()->back()->with('eror', 'Gagal menghapus data');
-        }
-        return redirect()->to(base_url('/user'))
-        ->with('succes', 'Data Berhasil Dihapus');
-    }
+
+
 }

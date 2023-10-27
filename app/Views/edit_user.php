@@ -5,11 +5,12 @@
     <center>
     <?php $validation = \Config\Services::validation();?>
 
-    <form action="<?= base_url('/user/' . $user['id']);?>
+    <form action="<?= base_url('/user/' . $user['id']) ?>" method="POST" enctype="multipart/form-data">
+
         <?= csrf_field() ?>
         <input type="hidden" name="_method" value="PUT">
-        <label for="">foto</label>
-        <input class="form-control" name="foto" type="file" id="formFile">
+        <label for="">Foto</label>
+        
         <br>
 
         <label for="">Nama : </label>
@@ -29,9 +30,10 @@
             <?php
             foreach ($kelas as $item){
             ?>
-                <option value="<?= $item['id']?>" <? $user['id_kelas'] == $item['id'] ? 'selected' : '' ?>>
+                <option value="<?= $item['id'] ?>" <?= $user['id_kelas'] == $item['id'] ? 'selected' : '' ?>>
                     <?= $item['nama_kelas'] ?>
                 </option>
+
             <?php
             }
             ?>
