@@ -1,33 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo base_url('./css/style.css'); ?>">
-    <title>Document</title>
-</head>
-<body>
-    <center>
-    </center>
-
+    <?= $this->extend('layouts/app') ?>
+    
+    <?= $this->section('content') ?>
+    
     <center>
       <div class="container">
-      <img src ="
-    <?php
-        echo base_url('./img/ijah.jpg') ;
-    ?>">
-      <div class="item" >
-            <?= $nama?>
-</div>
-<div class="item">
-            <?= $kelas?>
-</div>
-<div class="item">
-            <?= $npm?>
-</div>
-
+      <img src ="<?= $user['foto']??'<default-foto'?>" width="100%" height="100%" alt="">
+      <div class="item" ><?= $user['nama']?></div>
+      <div class="item" ><?= $user['npm']?></div>
+      <div class="item" ><?= $user['nama_kelas']?></div>
 </div>
 </center>
-
-</body>
-</html>
+    <?= $this->endSection() ?>
